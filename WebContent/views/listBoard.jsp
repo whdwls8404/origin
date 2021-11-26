@@ -10,10 +10,10 @@
 </head>
 <body>
 	
-	<div>
-		<a href="/ReServerProgram/insertForm.do">새글작성</a>
-	</div>
+	<a href="insertBoardForm.do">새글작성</a>
+	<br><br><br>
 	
+	전체 게시글: ${totalRecord}개<br>
 	<table border="1">
 		<thead>
 			<tr>
@@ -27,17 +27,17 @@
 		<tbody>
 			<c:if test="${empty list}">
 				<tr>
-					<td colspan="5">없음</td>
+					<td colspan="5">작성된 게시글이 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${not empty list}">
-				<c:forEach items="${list}"  var="board">
+				<c:forEach var="dto" items="${list}">
 					<tr>
-						<td>${board.no}</td> <!-- 번호 -->
-						<td><a href="views.board.no=${board.no}">${board.title}</a></td> <!-- 제목 -->
-						<td>${board.ip}</td> <!-- 작성자 -->
-						<td>${board.postdate}</td><!-- 작성일 -->
-						<td>${board.hit}</td><!-- 조회수 -->
+						<td>${dto.no}</td>
+						<td><a href="selectBoardByNo.do?no=${dto.no}">${dto.title}</a></td>
+						<td>${dto.author}</td>
+						<td>${dto.postdate}</td>
+						<td>${dto.hit}</td>
 					</tr>
 				</c:forEach>
 			</c:if>

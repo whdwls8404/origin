@@ -8,7 +8,7 @@ public class ReplyDTO {
 	private String author;
 	private String content;
 	private String ip;
-	private Long board_no;
+	private Long boardno;
 	private Date postdate;
 
 	public Long getNo() {
@@ -34,13 +34,13 @@ public class ReplyDTO {
 	}
 	public void setIp(String ip) {
 		this.ip = ip;
-	}
+	}	
 
-	public Long getBoard_no() {
-		return board_no;
+	public Long getBoardno() {
+		return boardno;
 	}
-	public void setBoard_no(Long board_no) {
-		this.board_no = board_no;
+	public void setBoardno(Long boardno) {
+		this.boardno = boardno;
 	}
 	public Date getPostdate() {
 		return postdate;

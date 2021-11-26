@@ -7,13 +7,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+ 
+
 import common.ModelAndView;
-import model.BoaedListService;
-import model.BoaedService;
-
-
+import model.BoardService;
+import model.DeleteBoardService;
+import model.InsertBoardService;
+import model.InsertReplyService;
+import model.SelectBoardByNoService;
+import model.SelectBoardListService;
+import model.UpdateBoardHitService;
+ 
 @WebServlet("*.do")
-
 
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -25,21 +30,34 @@ public class BoardController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		String requestURI = request.getRequestURI();                     /*   /BATCH/student/list.do   */    
-		String contextPath = request.getContextPath();                   /*   /BATCH                   */
-		String command = requestURI.substring(contextPath.length() + 1); /*   student/list.do          */
+		String[] arr = request.getRequestURI().split("/");
+		String command = arr[arr.length -1];
 		
 		ModelAndView mav = null;
-		BoaedService service = null;
+		BoardService service = null;
 		switch (command) {
-		case "studentList.do":
-			service = new BoaedListService();
+		case "selectBoardList.do":
+			service = new SelectBoardListService();
 			break;
-		case "insertForm.do":
-			mav = new ModelAndView("ReServerProgram/listBoard.jsp", false);
+		case "selectBoardByNo.do":
+			service = new SelectBoardByNoService();
+			break;
+		case "insertBoardForm.do":
+			mav = new ModelAndView("views/update.jsp", false);
+			break;
+		case "inserBoard.do":
+			service = new InsertBoardService();
+			break;
+		case "deleteBoard.do":
+			service = new DeleteBoardService();
+			break;
+		case "updateBoardHit.do":
+			service = new UpdateBoardHitService();
+			break;
+		case "insetReply.do":
+			service = new InsertReplyService();
 			break;
 		}
-		
 		if (service != null) {
 			try {
 				mav = service.execute(request, response);
@@ -47,7 +65,6 @@ public class BoardController extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		
 		if (mav != null) {
 			if (mav.isRedirect()) {
 				response.sendRedirect(mav.getView());
@@ -55,9 +72,9 @@ public class BoardController extends HttpServlet {
 				request.getRequestDispatcher(mav.getView()).forward(request, response);
 			}
 		}
-		
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

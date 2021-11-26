@@ -5,9 +5,7 @@ public class ModelAndView {
 	private String view;
 	private boolean isRedirect;
 	
-	public ModelAndView() {
-		
-	}
+	public ModelAndView() {}
 	public ModelAndView(String view, boolean isRedirect) {
 		super();
 		this.view = view;

@@ -2,12 +2,65 @@
 <!DOCTYPE mapper 
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.board">
 
-<mapper namespace="dao.boaed">
+	<select id="selectBoardList" resultType="dto.BoardDTO">
+		SELECT no, author, title, content, hit, ip, postdate
+		  FROM board
+		 ORDER BY no DESC
+	</select>
+	
+	<select id="getTotalBoardCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM board
+	</select>
+	
+	<select id="selectBoardByNo" parameterType="Long" resultType="dto.BoardDTO">
+		SELECT no, author, title, content, hit, ip, postdate
+		  FROM board
+		 WHERE no = #{no}
+	</select>
+	
+	<insert id="insertBoard" parameterType="dto.BoardDTO">
+		INSERT INTO board
+		VALUES (board_seq.nextval, #{author}, #{title}, #{content}, 0, #{ip}, SYSDATE)
+	</insert>
 
-	<select id="selectNoticeList" resultType="dao/board">
-		SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
-		  FROM NOTICE
+	<delete id="deleteBoard" parameterType="Long">
+		DELETE
+		  FROM board
+		 WHERE no = #{no}
+	</delete>
+	
+	<select id="checkReply" parameterType="Long">
+		UPDATE board
+		   SET hit = hit + 1
+		 WHERE no = #{no}
+	</select>
+	
+	<update id="updateBoardHit" parameterType="Long">
+		UPDATE board
+		  SET hit = hit + 1
+		 WHERE no = #{no}
+	</update>
+ 
+	<select id="selectReplyList" parameterType="dto.ReplyDTO">
+		SELECT no, author, content, hit, ip, postdate
+		  FROM reply
+		 WHERE BOARD_NO = #{board_no}
+	</select>
+	
+	<insert id="insertReply" parameterType="dto.ReplyDTO">
+		INSERT INTO reply
+		VALUES (reply_seq.nextval,  #{author}, #{content}, #{ip}, #{boardNo}, SYSDATE)
+	</insert>
+	
+	<select id="selectBoardByMaxHit" resultType="dto.BoardDTO">
+		SELECT a.title, a.content, a.hit
+		  FROM (SELECT title, content, hit
+		  		  FROM board
+		  		 ORDER BY hit DESC) a
+		 WHERE ROWNUM = 1
 	</select>
 
 </mapper>
